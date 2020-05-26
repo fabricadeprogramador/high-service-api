@@ -1,24 +1,28 @@
 const Convidado = require("./../model/Convidado");
 
-let geradorId = 4;
-let convidados = [
-  new Convidado(0, "Jão da Silva", 75, "M"),
-  new Convidado(1, "Maria do Bairro", 35, "F"),
-  new Convidado(2, "Zé do Caixão", 80, "M"),
-  new Convidado(3, "Maurício de Souza", 50, "M"),
-];
-
 class ConvidadoController {
-  static buscarTodos(req, res) {
-    res.json(convidados);
+  static async buscarTodos(req, res) {
+    console.log("[CONVIDADO CONTROLLER] : CHAMOU O MÉTODO BUSCAR TODOS");
+    try {
+      res.json(await Convidado.find({}));
+    } catch (error) {
+      console.log("[CONVIDADO CONTROLLER] : buscarTodos => " + error);
+      res.status(500).send("Erro ao buscar convidados!");
+    }
   }
 
-  static adicionar(req, res) {
-    let convidado = req.body;
-    convidado.id = geradorId;
-    convidados.push(convidado);
-    geradorId++;
-    res.status(201).json(convidado);
+  static async adicionar(req, res) {
+    try {
+      let convidadoNovo = req.body;
+      console.log(
+        "[CONVIDADO CONTROLLER] : CHAMOU O MÉTODO ADICIONAR" +
+          "\n PARÂMETRO: " +
+          JSON.stringify(convidadoNovo)
+      );
+      res.status(201).json(await Convidado.create(convidadoNovo));
+    } catch (error) {
+      res.status(500).send("Erro ao inserir novo convidado: " + error);
+    }
   }
 
   static deletar(req, res) {
