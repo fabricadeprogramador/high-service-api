@@ -44,8 +44,8 @@ class App {
     });
 
     //Listener
-    this.app.listen(3000, () => {
-      console.log("API - High Service rodando na porta 3000");
+    this.app.listen(process.env.PORT || config.port, () => {
+      console.log(`API - High Service rodando na porta ${config.port}`);
     });
   }
 }
