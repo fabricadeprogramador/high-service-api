@@ -1,0 +1,12 @@
+{
+  "development": {
+    "port": 3000,
+    "db": {
+      "nome": "high-service-api",
+      "url": "ds133659.mlab.com",
+      "porta": "33659",
+      "user": "high-service-user",
+      "password": "t27#2020"
+    }
+  }
+}

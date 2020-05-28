@@ -2,6 +2,10 @@
 
 const Express = require("express");
 const Mongoose = require("mongoose");
+const Cors = require("cors");
+
+const env = process.NODE_ENV || "development";
+const config = require("./config.json")[env];
 
 //Importação dos modelos
 const Convidado = require("./model/Convidado");
@@ -17,10 +21,11 @@ class App {
     this.app = Express();
 
     this.app.use(Express.json());
+    this.app.use(Cors());
 
     //Conexão com o banco de dados MongoDB
     Mongoose.connect(
-      "mongodb://high-service-user:t27#2020@ds133659.mlab.com:33659/high-service-api",
+      `mongodb://${config.db.user}:${config.db.password}@${config.db.url}:${config.db.porta}/${config.db.nome}`,
       { useNewUrlParser: true, useUnifiedTopology: true }
     );
 
