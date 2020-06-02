@@ -9,6 +9,7 @@ const config = require("./config.json")[env];
 
 //Importação dos modelos
 const Convidado = require("./model/Convidado");
+const Cliente = require("./model/Cliente");
 
 class App {
   constructor() {
@@ -31,12 +32,15 @@ class App {
 
     //Instanciando modelos
     new Convidado();
+    new Cliente();
 
     //Importando as rotas
     const ConvidadoRoute = require("./routes/ConvidadoRoute");
+    const ClientesRoute = require("./routes/ClientesRoute");
 
     //Instanciando as rotas
     new ConvidadoRoute(this.app);
+    new ClientesRoute(this.app);
 
     //Definição da rota raíz
     this.app.get("/", (req, res) => {
