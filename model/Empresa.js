@@ -1,5 +1,5 @@
 const Mongoose = require("mongoose");
-class Empresas extends Mongoose.Schema {
+class Empresa extends Mongoose.Schema {
   constructor() {
     super({
       
@@ -19,18 +19,14 @@ class Empresas extends Mongoose.Schema {
         type: String,
         required: true,
       },
-      produtosServiços: {
-        type: String,
-        required: true,
-      },
       ativo: {
         type: Boolean,
         required: true,
       },
     });
 
-    Mongoose.model("Empresas", this);
+    Mongoose.model("Empresa", this);
   }
 }
 
-module.exports = Empresas;
+module.exports = Empresa;

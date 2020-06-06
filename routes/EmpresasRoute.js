@@ -1,4 +1,4 @@
-const EmpresasController = require("../controller/EmpresasController");
+const EmpresaController = require("../controller/EmpresaController");
 
 class EmpresasRoute {
   constructor(app) {
@@ -6,11 +6,11 @@ class EmpresasRoute {
 
     app
       .route("/empresas")
-      .get(EmpresasController.buscarTodos)
-      .post(EmpresasController.adicionar)
-      .put(EmpresasController.editar)
+      .get(EmpresaController.buscarTodos) 
+      .post(EmpresaController.adicionar)
+      .put(EmpresaController.editar)
 
-      app.route("/empresas/:id").post(EmpresasController.inativar);
+      app.route("/empresas/:_id").post(EmpresaController.inativar);
     
   }
 }
