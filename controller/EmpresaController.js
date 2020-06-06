@@ -38,17 +38,13 @@ class EmpresaController {
 
         const { _id, empresa, cnpj, email, telefone } = req.body;
 
-        const existeEmpresa = await Empresa.findOne({
-          _id
-        });
-
-        console.log(existeEmpresa);
+        const existeEmpresa = await Empresa.findOne({ _id });
 
         if (!existeEmpresa) {
           return res.status(400).json({ error: 'Empresa não existe' });
         }
 
-        const empresaEditada = await Empresa.updateOne({
+        await existeEmpresa.updateOne({
           empresa,
           cnpj,
           email,

@@ -29,4 +29,4 @@ class Usuario extends Mongoose.Schema {
   }
 }
 
-module.exports = Cliente;
+module.exports = Usuario;

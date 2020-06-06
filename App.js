@@ -11,6 +11,7 @@ const config = require("./config.json")[env];
 const Convidado = require("./model/Convidado");
 const Cliente = require("./model/Cliente");
 const Empresa = require("./model/Empresa");
+const Usuario = require("./model/Usuario");
 
 class App {
   constructor() {
@@ -35,16 +36,19 @@ class App {
     new Convidado();
     new Cliente();
     new Empresa();
+    new Usuario();
 
     //Importando as rotas
     const ConvidadoRoute = require("./routes/ConvidadoRoute");
     const ClientesRoute = require("./routes/ClientesRoute");
     const EmpresasRoute = require("./routes/EmpresasRoute");
+    const UsuarioRoute = require("./routes/UsuarioRoute");
 
     //Instanciando as rotas
     new ConvidadoRoute(this.app);
     new ClientesRoute(this.app);
     new EmpresasRoute(this.app)
+    new UsuarioRoute(this.app)
 
     //Definição da rota raíz
     this.app.get("/", (req, res) => {

@@ -9,8 +9,9 @@ class UsuarioRoute {
       .get(UsuarioController.buscarTodos)
       .post(UsuarioController.adicionar)
       .put(UsuarioController.editar)
-      .post(UsuarioController.inativo);
-    
+
+    app.route("/usuarios/:_id").post(UsuarioController.inativar);
+      
   }
 }
 
