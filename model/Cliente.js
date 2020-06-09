@@ -54,6 +54,11 @@ class Cliente extends Mongoose.Schema {
         type: Boolean,
         required: true,
       },
+      usuario: {
+        type: Mongoose.Schema.Types.ObjectId,
+        ref: "Usuario",
+        required: true,
+      },
     });
 
     //Registrando Schema no Mongoose

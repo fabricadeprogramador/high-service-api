@@ -12,6 +12,16 @@ class ClientesController {
     }
   }
 
+  static async buscarTodosComUsuarios(req, res) {
+    console.log("[CLIENTES CONTROLLER] : CHAMOU O MÉTODO BUSCAR TODOS");
+    try {
+      res.json(await Cliente.find({}).populate("usuario", "username ativo"));
+    } catch (error) {
+      console.log("[CLIENTES CONTROLLER] : buscarTodos => " + error);
+      res.status(500).send("Erro ao buscar clientes!");
+    }
+  }
+
   static async adicionar(req, res) {
     try {
       let clienteNovo = req.body;

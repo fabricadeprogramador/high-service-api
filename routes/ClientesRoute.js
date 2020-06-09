@@ -6,7 +6,7 @@ class ClientesRoute {
 
     app
       .route("/clientes")
-      .get(ClientesController.buscarTodos)
+      .get(ClientesController.buscarTodosComUsuarios)
       .post(ClientesController.adicionar)
       .put(ClientesController.editar)
       .delete(ClientesController.deletar);
