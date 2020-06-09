@@ -29,7 +29,11 @@ class App {
     //Conexão com o banco de dados MongoDB
     Mongoose.connect(
       `mongodb://${config.db.user}:${config.db.password}@${config.db.url}:${config.db.porta}/${config.db.nome}`,
-      { useNewUrlParser: true, useUnifiedTopology: true }
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+      }
     );
 
     //Instanciando modelos
@@ -47,8 +51,8 @@ class App {
     //Instanciando as rotas
     new ConvidadoRoute(this.app);
     new ClientesRoute(this.app);
-    new EmpresasRoute(this.app)
-    new UsuarioRoute(this.app)
+    new EmpresasRoute(this.app);
+    new UsuarioRoute(this.app);
 
     //Definição da rota raíz
     this.app.get("/", (req, res) => {
