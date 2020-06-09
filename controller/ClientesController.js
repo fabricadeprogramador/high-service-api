@@ -26,48 +26,6 @@ class ClientesController {
     }
   }
 
-  static async deletar(req, res) {
-    try {
-      let clienteDeletar = req.body;
-
-      console.log(
-        "[CLIENTES CONTROLLER] : CHAMOU O MÉTODO DELETAR" +
-          "\n PARÂMETRO: " +
-          JSON.stringify(clienteDeletar)
-      );
-
-      if (clienteDeletar._id == undefined) {
-        res.send("Atributos insuficientes para a ação!");
-      } else {
-        res
-          .status(200)
-          .json(await Cliente.findByIdAndDelete(clienteDeletar._id));
-      }
-    } catch (error) {
-      console.log("[CLIENTES CONTROLLER] : DELETAR => " + error);
-
-      res.status(500).send("Erro ao deletar cliente!");
-    }
-  }
-
-  static async deletarPorId(req, res) {
-    try {
-      let idDeletar = req.params.id;
-
-      console.log(
-        "[CLIENTES CONTROLLER] : CHAMOU O MÉTODO DELETAR QUERY PARAM" +
-          "\n PARÂMETRO: " +
-          idDeletar
-      );
-
-      res.status(200).json(await Cliente.findByIdAndDelete(idDeletar));
-    } catch (error) {
-      console.log("[CLIENTES CONTROLLER] : DELETAR => " + error);
-
-      res.status(500).send("Erro ao deletar cliente!");
-    }
-  }
-
   static async editar(req, res) {
     try {
       let clienteEditar = req.body;
@@ -104,6 +62,34 @@ class ClientesController {
       console.log("[CLIENTES CONTROLLER] : EDITAR => " + error);
 
       res.status(500).send("Erro ao editar cliente!");
+    }
+  }
+
+  static async ativarInativar(req, res) {
+    try {
+      let IdAtivarInativar = req.body;
+      console.log(
+        "[CLIENTES CONTROLLER] : CHAMOU O MÉTODO ATIVARINATIVAR" +
+          "\n PARÂMETRO: " +
+          JSON.stringify(IdAtivarInativar)
+      );
+      if (IdAtivarInativar._id == undefined) {
+        res.send("Atributos insuficientes para a ação!");
+      } else {
+        let clienteAtivarInativar = await Cliente.findById(
+          IdAtivarInativar._id
+        );
+        clienteAtivarInativar.ativo = !clienteAtivarInativar.ativo;
+        await Cliente.findByIdAndUpdate(
+          IdAtivarInativar._id,
+          clienteAtivarInativar
+        );
+        res.status(200).json(clienteAtivarInativar);
+      }
+    } catch (error) {
+      console.log("[CLIENTES CONTROLLER] : ATIVARINATIVAR => " + error);
+
+      res.status(500).send("Erro ao ativar ou inativar cliente!");
     }
   }
 }

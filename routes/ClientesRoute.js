@@ -8,10 +8,11 @@ class ClientesRoute {
       .route("/clientes")
       .get(ClientesController.buscarTodos)
       .post(ClientesController.adicionar)
-      .put(ClientesController.editar)
-      .delete(ClientesController.deletar);
+      .put(ClientesController.editar);
 
-    app.route("/clientes/:id").delete(ClientesController.deletarPorId);
+    app
+      .route("/clientes/ativarInativar")
+      .put(ClientesController.ativarInativar);
   }
 }
 
