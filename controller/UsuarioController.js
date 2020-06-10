@@ -59,14 +59,28 @@ class UsuarioController {
     }
   }
   
+
+  static async inativos(req, res) {
+    console.log("[USUARIO CONTROLLER] : CHAMOU O MÉTODO BUSCAR TODOS OS INATIVOS ");
+    try {
+      res.json(await Usuario.find({}));
+    } catch (error) {
+      console.log("[USUARIO CONTROLLER] : buscarTodos => " + error);
+      res.status(500).send("Erro ao buscar usuarios!");
+    }
+  }
+
+
+
   static async inativar(req, res) {
     try {
       const { _id } = req.params;
+      const usuarioInativo = req.body;
 
       console.log(
         "[USUARIO CONTROLLER] : CHAMOU O MÉTODO INATIVAR QUERY PARAM" +
           "\n PARÂMETRO: " +
-          _id
+          JSON.stringify(usuarioInativo)
       );
 
       const existeUsuario = await Usuario.findOne({ _id });
