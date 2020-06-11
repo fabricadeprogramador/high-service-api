@@ -57,7 +57,7 @@ class Cliente extends Mongoose.Schema {
       usuario: {
         type: Mongoose.Schema.Types.ObjectId,
         ref: "Usuario",
-        required: true,
+        required: false,
       },
     });
 
