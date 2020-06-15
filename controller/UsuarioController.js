@@ -2,15 +2,19 @@ const Mongoose = require("mongoose");
 const Usuario = Mongoose.model("Usuario");
 
 class UsuarioController {
+
+
   static async buscarTodos(req, res) {
-    console.log("[USUARIO CONTROLLER] : CHAMOU O MÉTODO BUSCAR TODOS");
+    console.log("[USUARIO CONTROLLER] :CHAMOU O MÉTODO BUSCAR TODOS");
     try {
-      res.json(await Usuario.find({}));
+    res.json(await Usuario.find({},{"password":0}));
     } catch (error) {
-      console.log("[USUARIO CONTROLLER] : buscarTodos => " + error);
-      res.status(500).send("Erro ao buscar usuarios!");
+    console.log("[USUARIO CONTROLLER] : buscarTodos => " + error);
+    res.status(500).send("Erro ao buscar Usuarios!");
     }
-  }
+}
+
+
 
   static async adicionar(req, res) {
     try {
@@ -61,9 +65,12 @@ class UsuarioController {
   
 
   static async inativos(req, res) {
-    console.log("[USUARIO CONTROLLER] : CHAMOU O MÉTODO BUSCAR TODOS OS INATIVOS ");
+
+   
+    console.log("[USUARIO CONTROLLER] : MÉTODO TODOS OS INATIVOS ");
     try {
-      res.json(await Usuario.find({}));
+      res.json(await Usuario.find({},{"password":0}));
+      
     } catch (error) {
       console.log("[USUARIO CONTROLLER] : buscarTodos => " + error);
       res.status(500).send("Erro ao buscar usuarios!");
@@ -90,7 +97,11 @@ class UsuarioController {
       }
 
       await existeUsuario.updateOne({
-        ativo: false,
+        
+       
+          ativo: false,
+       
+   
       });
 
       return res.json(existeUsuario);
@@ -101,6 +112,37 @@ class UsuarioController {
       res.status(500).send("Erro ao inativar usuario!");
     }
   }
+
+  static async ativarInativar(req, res) {
+    try {
+      let IdAtivarInativar = req.body;
+      console.log(
+        "[USUARIO CONTROLLER] : CHAMOU O MÉTODO ATIVAR/DESATIVAR" +
+          "\n PARÂMETRO: " +
+          JSON.stringify(IdAtivarInativar)
+      );
+      if (IdAtivarInativar._id == undefined) {
+        res.send("Atributos insuficientes para a ação!");
+      } else {
+        let ativarInativar = await Usuario.findById(IdAtivarInativar._id);
+        ativarInativar.ativo = !ativarInativar.ativo;
+        await Usuario.findByIdAndUpdate(IdAtivarInativar._id,ativarInativar);
+        res.status(200).json(ativarInativar);
+      }
+    } catch (error) {
+      console.log("[USUARIO CONTROLLER] : ATIVAR/DESATIVAR => " + error);
+
+      res.status(500).send("Erro ao ativar ou inativar!");
+    }
+  }
+
+
+
+
+
+
+
+
 }
 
 module.exports = UsuarioController;
