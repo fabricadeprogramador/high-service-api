@@ -23,6 +23,30 @@ class Empresa extends Mongoose.Schema {
         type: Boolean,
         required: true,
       },
+// DECLARACAO DE MENSAGENS
+
+mensagens:[
+  {
+
+  user:{
+  type: String,
+  required: true,
+  },
+  
+  mensagem:{
+  type: String,
+  required: true,
+  },
+  
+  visualizado:{
+  type: Boolean,
+  required:true,
+  },
+
+}
+],
+// FIM DA DECLAÇAO DE MENSAGENS 
+
     });
 
     Mongoose.model("Empresa", this);
