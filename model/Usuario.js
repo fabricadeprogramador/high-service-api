@@ -2,7 +2,6 @@ const Mongoose = require("mongoose");
 class Usuario extends Mongoose.Schema {
   constructor() {
     super({
-      
       username: {
         type: String,
         required: true,
@@ -13,6 +12,7 @@ class Usuario extends Mongoose.Schema {
       },
       tipo: {
         type: String,
+        enum: ["ADMIN", "CLIENTE"],
         required: true,
       },
       ativo: {
@@ -20,9 +20,6 @@ class Usuario extends Mongoose.Schema {
         required: true,
       },
     });
-
-    
-
 
     //Registrando Schema no Mongoose
     Mongoose.model("Usuario", this);
