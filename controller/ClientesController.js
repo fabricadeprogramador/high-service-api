@@ -32,7 +32,7 @@ class ClientesController {
       );
       res.status(201).json(await Cliente.create(clienteNovo));
     } catch (error) {
-      res.status(500).send("Erro ao inserir novo cliente: " + error);
+      res.status(500).send("Erro ao inserir novo cliente!");
     }
   }
 
@@ -84,7 +84,7 @@ class ClientesController {
           JSON.stringify(IdAtivarInativar)
       );
       if (IdAtivarInativar._id == undefined) {
-        res.send("Atributos insuficientes para a ação!");
+        res.status(200).send("Atributos insuficientes para a ação!");
       } else {
         let clienteAtivarInativar = await Cliente.findById(
           IdAtivarInativar._id
