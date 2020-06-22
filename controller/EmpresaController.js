@@ -93,25 +93,73 @@ class EmpresaController {
 // METODOS PARA MENSAGENS 
 
 static async buscarMensagens(req, res) {
-  console.log("[EMPRESA CONTROLLER] : CHAMOU O MÉTODO BUSCAR MENSAGENS");
+
+  
   try {
-    res.json(await Empresa.find({},{"mensagens:":1}));
+    let empresaMensagem = req.body;
+
+    console.log("[EMPRESA CONTROLLER] : CHAMOU O MÉTODO BUSCAR MENSAGENS"
+    +JSON.stringify(empresaMensagem));
+    
+  //  const {_id, user,mensagem,visualizado}=req.body;
+
+const {_id,mensagens:[user,mensagem,visualizado]} =req.body ;
+    const existeEmpresa = await Empresa.findOne({_id});
+  
+     if (!existeEmpresa){
+      return res.status(400).json({error:"Empresa nao existe"});
+     }
+ 
+
+     await existeEmpresa.find({
+      mensagens:[user,
+      mensagem,
+      visualizado,]
+     });
+      
+   return res.json(empresaMensagem);
+
   } catch (error) {
     console.log("[EMPRESA CONTROLLER] : buscando Mensagens => " + error);
     res.status(500).send("Erro ao buscar mensagens!");
+ 
   }
 }
+
+
+
 
 static async adicionarMensagens(req, res) {
   try {
     let mensagemNova = req.body;
+    
     console.log(
-      "[EMPRESA CONTROLLER] : CHAMOU O MÉTODO ADICIONAR" +
-        "\n PARÂMETRO: " +
-        JSON.stringify(mensagemNova)
-    );
-    res.status(201).json(await Empresa.create(mensagemNova));
-  } catch (error) {
+      "[EMPRESA CONTROLLER] : CHAMOU O MÉTODO ADICIONAR MENSAGENS" +
+        "\n PARÂMETRO: " +JSON.stringify(mensagemNova)
+       
+    );     
+    const {_id,mensagens:[user,mensagem,visualizado]} =req.body ;
+    const existeEmpresa = await Empresa.findOne({_id});
+  
+     if (!existeEmpresa){
+      return res.status(400).json({error:"Empresa nao existe"});
+     }
+     
+     await existeEmpresa.updateOne({
+      mensagens:[user,
+      mensagem,
+      visualizado,]
+     });
+
+  
+       return res.json(mensagemNova);
+   
+
+  }
+  
+  catch (error) {
+    console.log("[MENSAGENS CONTROLLER]: NOVA MENSAGEM =>" +error);
+
     res.status(500).send("Erro ao inserir nova empresa: " + error);
   }
 }

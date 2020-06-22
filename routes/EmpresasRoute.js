@@ -10,8 +10,18 @@ class EmpresasRoute {
       .post(EmpresaController.adicionar)
       .put(EmpresaController.editar)
 
-      app.route("/empresas/:_id").post(EmpresaController.inativar);
+      
+     // app.route("/empresas/:_id").post(EmpresaController.inativar)
 
+      //Rotas Mensagens
+      app.route("/empresas/mensagens")
+      .get(EmpresaController.buscarMensagens)
+      .put(EmpresaController.adicionarMensagens);
+      
+      
+      
+     
+     //Fim da rota mensagens
          
   }
 }
