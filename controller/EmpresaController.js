@@ -51,7 +51,7 @@ class EmpresaController {
           telefone,
         });
         
-        return res.json(empresaEditada);
+        return res.json(empresaEditar);
     } catch (error) {
       console.log("[EMPRESA CONTROLLER] : EDITAR => " + error);
 
@@ -78,11 +78,20 @@ class EmpresaController {
         return res.status(400).json({ error: 'Empresa não existe' });
       }
 
-      await existeEmpresa.updateOne({
-        ativo: false,
-      });
+      else{
+     let  InativarAtivar = await Empresa.findById(existeEmpresa._id);
+        InativarAtivar.ativo=!InativarAtivar.ativo;
+        await Empresa.findByIdAndUpdate(empresaInativar._id,InativarAtivar);
+        res.status(200).json(InativarAtivar);
 
-      return res.json(existeEmpresa);
+
+      }
+
+   //   await existeEmpresa.updateOne({
+   //     ativo: false,
+   //   });
+
+    //  return res.json(existeEmpresa);
     } catch (error) {
       console.log("[EMPRESA CONTROLLER] : INATIVAR => " + error);
 
@@ -93,77 +102,29 @@ class EmpresaController {
 // METODOS PARA MENSAGENS 
 
 static async buscarMensagens(req, res) {
-
-  
+  console.log("[EMPRESA CONTROLLER] : CHAMOU O MÉTODO BUSCAR MENSAGENS");
   try {
-    let empresaMensagem = req.body;
-
-    console.log("[EMPRESA CONTROLLER] : CHAMOU O MÉTODO BUSCAR MENSAGENS"
-    +JSON.stringify(empresaMensagem));
-    
-  //  const {_id, user,mensagem,visualizado}=req.body;
-
-const {_id,mensagens:[user,mensagem,visualizado]} =req.body ;
-    const existeEmpresa = await Empresa.findOne({_id});
-  
-     if (!existeEmpresa){
-      return res.status(400).json({error:"Empresa nao existe"});
-     }
- 
-
-     await existeEmpresa.find({
-      mensagens:[user,
-      mensagem,
-      visualizado,]
-     });
-      
-   return res.json(empresaMensagem);
-
+    res.json(await Empresa.find({_id},{"mensagens:":1}));
   } catch (error) {
     console.log("[EMPRESA CONTROLLER] : buscando Mensagens => " + error);
     res.status(500).send("Erro ao buscar mensagens!");
- 
   }
 }
-
-
-
 
 static async adicionarMensagens(req, res) {
   try {
     let mensagemNova = req.body;
-    
     console.log(
-      "[EMPRESA CONTROLLER] : CHAMOU O MÉTODO ADICIONAR MENSAGENS" +
-        "\n PARÂMETRO: " +JSON.stringify(mensagemNova)
-       
-    );     
-    const {_id,mensagens:[user,mensagem,visualizado]} =req.body ;
-    const existeEmpresa = await Empresa.findOne({_id});
-  
-     if (!existeEmpresa){
-      return res.status(400).json({error:"Empresa nao existe"});
-     }
-     
-     await existeEmpresa.updateOne({
-      mensagens:[user,
-      mensagem,
-      visualizado,]
-     });
+      "[EMPRESA CONTROLLER] : CHAMOU O MÉTODO ADICIONAR" +
+        "\n PARÂMETRO: " +
+        JSON.stringify(mensagemNova)
+    );
+    res.status(201).json(await Empresa.create(mensagemNova));
 
-  
-       return res.json(mensagemNova);
-   
-
-  }
-  
-  catch (error) {
-    console.log("[MENSAGENS CONTROLLER]: NOVA MENSAGEM =>" +error);
-
+  } catch (error) {
     res.status(500).send("Erro ao inserir nova empresa: " + error);
   }
 }
-
 
 
 //FIM DO METODO

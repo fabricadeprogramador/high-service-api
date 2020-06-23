@@ -11,7 +11,7 @@ class EmpresasRoute {
       .put(EmpresaController.editar)
 
       
-     // app.route("/empresas/:_id").post(EmpresaController.inativar)
+      app.route("/empresas/:_id").post(EmpresaController.inativar)
 
       //Rotas Mensagens
       app.route("/empresas/mensagens")
