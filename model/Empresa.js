@@ -58,18 +58,30 @@ class Empresa extends Mongoose.Schema {
       // DECLARACAO DE MENSAGENS
       mensagens: [
         {
-          user: {
+          cliente: {
             type: String,
             required: true,
           },
-
-          mensagem: {
+          assunto: {
             type: String,
-            required: true,
+            require: true,
           },
-
-          visualizado: {
-            type: Boolean,
+          conversa: [
+            {
+              mensagem: {
+                type: String,
+                required: true,
+              },
+              origem: {
+                type: String,
+                enum: ["EMPRESA", "CLIENTE"],
+                require: true,
+              },
+            },
+          ],
+          status: {
+            type: String,
+            enum: ["VISTO", "RESOLVIDO", "EM ANDAMENTO", "NAO RESOLVIDO"],
             required: true,
           },
         },
