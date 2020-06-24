@@ -10,13 +10,6 @@ class EmpresasRoute {
 
     app.route("/empresas/inativar/:_id").put(EmpresaController.inativar);
 
-    // ROTA MENSAGEM
-    app
-      .route("/empresas/mensagens")
-      .get(EmpresaController.buscarMensagens)
-      .post(EmpresaController.adicionarMensagens);
-    //FIM DA ROTA MENSAGEM
-
     //INICIO ROTA PRODUTOSESERVICOS
     app
       .route("/empresas/produtoseservicos")
@@ -32,6 +25,13 @@ class EmpresasRoute {
       .route("/empresas/produtoseservicos/ativarInativar")
       .put(EmpresaController.ativarInativarProdutoServico);
     //FIM ROTA PRODUTOSESERVICOS
+
+    //Rotas Mensagens
+    app
+      .route("/empresas/mensagens")
+      .get(EmpresaController.buscarMensagens)
+      .put(EmpresaController.adicionarMensagens);
+    //Fim da rota mensagens
   }
 }
 

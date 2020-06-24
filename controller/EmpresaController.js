@@ -51,7 +51,7 @@ class EmpresaController {
         telefone,
       });
 
-      return res.json(empresaEditada);
+      return res.json(empresaEditar);
     } catch (error) {
       console.log("[EMPRESA CONTROLLER] : EDITAR => " + error);
 
@@ -76,13 +76,18 @@ class EmpresaController {
 
       if (!existeEmpresa) {
         return res.status(400).json({ error: "Empresa não existe" });
+      } else {
+        let InativarAtivar = await Empresa.findById(existeEmpresa._id);
+        InativarAtivar.ativo = !InativarAtivar.ativo;
+        await Empresa.findByIdAndUpdate(empresaInativar._id, InativarAtivar);
+        res.status(200).json(InativarAtivar);
       }
 
-      await existeEmpresa.updateOne({
-        ativo: false,
-      });
+      //   await existeEmpresa.updateOne({
+      //     ativo: false,
+      //   });
 
-      return res.json(existeEmpresa);
+      //  return res.json(existeEmpresa);
     } catch (error) {
       console.log("[EMPRESA CONTROLLER] : INATIVAR => " + error);
 
@@ -107,7 +112,6 @@ class EmpresaController {
         "[EMPRESA CONTROLLER] : BUSCAR TODOS PRODUTOS SERVICOS POR ID QUERY PARAM => " +
           error
       );
-
       res.status(500).send("Erro ao buscar todos os Produtos e Serviços!");
     }
   }
@@ -332,14 +336,13 @@ class EmpresaController {
   //   }
   // }
   //***************************************************************
-
   // Fim    Metodos Produtos e Serviços
 
   // METODOS PARA MENSAGENS
   static async buscarMensagens(req, res) {
     console.log("[EMPRESA CONTROLLER] : CHAMOU O MÉTODO BUSCAR MENSAGENS");
     try {
-      res.json(await Empresa.find({}, { "mensagens:": 1 }));
+      res.json(await Empresa.find({ _id }, { "mensagens:": 1 }));
     } catch (error) {
       console.log("[EMPRESA CONTROLLER] : buscando Mensagens => " + error);
       res.status(500).send("Erro ao buscar mensagens!");
