@@ -342,9 +342,9 @@ class EmpresaController {
   static async buscarMensagens(req, res) {
     console.log("[EMPRESA CONTROLLER] : CHAMOU O MÉTODO BUSCAR MENSAGENS");
     try {
-      res.json(await Empresa.find({ _id }, { "mensagens:": 1 }));
+      res.json(await Empresa.find({},{"mensagens":1}));
     } catch (error) {
-      console.log("[EMPRESA CONTROLLER] : buscando Mensagens => " + error);
+      console.log("[EMPRESA CONTROLLER] : BUSCANDO MENSAGENS => " + error);
       res.status(500).send("Erro ao buscar mensagens!");
     }
   }
