@@ -56,7 +56,7 @@ class App {
     new ClientesRoute(this.app);
     new EmpresasRoute(this.app);
     new UsuarioRoute(this.app);
-    new TransacoesRoute(this.app)
+    new TransacoesRoute(this.app);
 
     //Definição da rota raíz
     this.app.get("/", (req, res) => {
