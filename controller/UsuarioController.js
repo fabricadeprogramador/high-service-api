@@ -1,5 +1,6 @@
 const Mongoose = require("mongoose");
 const Usuario = Mongoose.model("Usuario");
+const bcrypt = require('bcryptjs');
 
 class UsuarioController {
 
@@ -14,19 +15,42 @@ class UsuarioController {
     }
 }
 
+static async buscarTudo(req, res) {
+  console.log("[USUARIO CONTROLLER] :CHAMOU O MÉTODO BUSCAR TUDO");
+  try {
+  res.json(await Usuario.find({}));
+  } catch (error) {
+  console.log("[USUARIO CONTROLLER] : buscarTodos => " + error);
+  res.status(500).send("Erro ao buscar Usuarios!");
+  }
+}
 
 
   static async adicionar(req, res) {
-    try {
-      let UsuarioNovo = req.body;
-      console.log(
-        "[USUARIO CONTROLLER] : CHAMOU O MÉTODO ADICIONAR" +
-          "\n PARÂMETRO: " +
-          JSON.stringify(UsuarioNovo)
-      );
-      res.status(201).json(await Usuario.create(UsuarioNovo));
-    } catch (error) {
-      res.status(500).send("Erro ao inserir novo usuario: " + error);
+    let UsuarioNovo = req.body;
+    if(UsuarioNovo.username && UsuarioNovo.password) {
+      const existeUsuario = await Usuario.findOne({ 'username': UsuarioNovo.username});
+
+      if (existeUsuario) {
+        return res.status(400).json({ error: 'Usuario já existe' });
+      }
+      else{
+        try {
+          let hash = bcrypt.hashSync(UsuarioNovo.password, 10);
+
+          UsuarioNovo.password = hash
+
+          console.log("[USUARIO CONTROLLER] : CHAMOU O MÉTODO ADICIONAR" + "\n PARÂMETRO: " +
+            JSON.stringify(UsuarioNovo)
+          );
+            res.status(201).json(await Usuario.create(UsuarioNovo));
+          } catch (error) {
+            res.status(500).send("Erro ao inserir novo usuario: " + error);
+          }
+        }
+      }
+    else{ 
+      res.status(200).send("Preencha Username e password");
     }
   }
 
@@ -136,9 +160,52 @@ class UsuarioController {
     }
   }
 
+  static async login(req, res){
+    //esse teste abaixo deve ser feito no seu banco de dados
+    try {
+      let user = req.body
+      console.log("[USUARIO CONTROLLER] : CHAMOU O MÉTODO LOGAR " + "\n PARÂMETRO: " +
+          JSON.stringify(user));
+          let foundUser = await Usuario.findOne({ 'username': user.username});
+          console.log(JSON.stringify(foundUser))
+
+          console.log("Até aqui OK!!")
+
+          if(foundUser) {     
+            console.log(JSON.stringify(foundUser))       
+            const result = bcrypt.compareSync(user.password, foundUser.password)
+            if(result){
+              res.status(200).json({message: 'Usuário Logado!', statusCode: '200'})
+            }else{
+              res.send("Login e Senha inválidos!!");
+            }
+            }
+          else{
+            console.log("ENTROU NO ELSE")
+            res.send("Usuario nao encontrado com esses parametros");
+          }  
+        }catch (error) {
+      console.log("[USUARIO CONTROLLER] : LOGAR => " + error);
+
+      res.status(500).json({message: 'Login inválido!'});
+    }
+  }
 
 
+static async deletarTudo(req, res) {
+  try {
+    console.log("[CONVIDADO CONTROLLER] : CHAMOU O MÉTODO DELETAR");
 
+    res.status(200).json(await Usuario.deleteMany());
+    console.log('All Data successfully deleted');
+
+  } catch (error) {
+    console.log("[CONVIDADO CONTROLLER] : DELETAR => " + error);
+
+    res.status(500).send("Erro ao deletar convidado!");
+  }
+
+}
 
 
 

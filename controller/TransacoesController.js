@@ -30,7 +30,7 @@ class TransacoesController {
         let transacaoEditar = req.body;
 
         console.log(
-        "[CLIENTES CONTROLLER] : CHAMOU O MÉTODO EDITAR" +
+        "[TRANSACAO CONTROLLER] : CHAMOU O MÉTODO EDITAR" +
             "\n PARÂMETRO: " +
             JSON.stringify(transacaoEditar)
         );
