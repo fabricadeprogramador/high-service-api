@@ -9,9 +9,11 @@ class UsuarioRoute {
       .get(UsuarioController.buscarTodos)
       .post(UsuarioController.adicionar)
       .put(UsuarioController.editar)
-      .delete(UsuarioController.deletarTudo)    
+         
 
       app.route("/usuarios/ativarInativar").put(UsuarioController.ativarInativar);
+
+      app.route("/usuarios/esseaquiehsohprateste").delete(UsuarioController.deletarTudo);
       app.route("/usuarios/buscar").get(UsuarioController.buscarTudo);
       app.route("/usuarios/login").post(UsuarioController.login);
           
