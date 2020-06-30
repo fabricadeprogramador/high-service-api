@@ -12,17 +12,17 @@ class EmpresasRoute {
 
     //INICIO ROTA PRODUTOSESERVICOS
     app
-      .route("/empresas/produtoseservicos")
+      .route("/empresas/produtosEServicos")
       .post(EmpresaController.adicionarProdutoServico)
       .put(EmpresaController.editarProdutoServico);
     // .delete(EmpresaController.deleteProdutoServicoSemId);
 
     app
-      .route("/empresas/produtoseservicos/:id")
+      .route("/empresas/produtosEServicos/buscarTodos/:id")
       .get(EmpresaController.buscarTodosProdutosServicosPorId);
 
     app
-      .route("/empresas/produtoseservicos/ativarInativar")
+      .route("/empresas/produtosEServicos/ativarInativar")
       .put(EmpresaController.ativarInativarProdutoServico);
     //FIM ROTA PRODUTOSESERVICOS
 
