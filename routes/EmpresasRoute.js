@@ -18,7 +18,7 @@ class EmpresasRoute {
     // .delete(EmpresaController.deleteProdutoServicoSemId);
 
     app
-      .route("/empresas/produtoseservicos/:id")
+      .route("/empresas/produtoseservicos")
       .get(EmpresaController.buscarTodosProdutosServicosPorId);
 
     app

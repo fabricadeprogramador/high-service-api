@@ -98,14 +98,14 @@ class EmpresaController {
   // Início Metodos Produtos e Serviços
   static async buscarTodosProdutosServicosPorId(req, res) {
     try {
-      let _idEmpresa = req.params.id;
+      let _idEmpresa = req.body
 
       console.log(
         "[EMPRESA CONTROLLER] : CHAMOU O MÉTODO BUSCAR TODOS PRODUTOS SERVICOS POR ID QUERY PARAM" +
           "\n PARÂMETRO: " +
-          _idEmpresa
+          JSON.stringify(_idEmpresa)
       );
-      const empresa = await Empresa.findById(_idEmpresa);
+      const empresa = await Empresa.findById(_idEmpresa._id);
       res.status(200).json(empresa.produtosServicos);
     } catch (error) {
       console.log(

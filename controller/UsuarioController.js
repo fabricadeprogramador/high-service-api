@@ -175,19 +175,22 @@ static async buscarTudo(req, res) {
             console.log(JSON.stringify(foundUser))       
             const result = bcrypt.compareSync(user.password, foundUser.password)
             if(result){
-              res.status(200).json({message: 'Usuário Logado!', statusCode: '200'})
+              //res.status(200).json({message: 'Usuário Logado!', statusCode: '200'})
+              res.status(200).send("logado")
             }else{
-              res.send("Login e Senha inválidos!!");
+              res.status(200).send("inválido")
+              //res.json({message: "Login e Senha inválidos!!"});
             }
             }
           else{
             console.log("ENTROU NO ELSE")
-            res.send("Usuario nao encontrado com esses parametros");
+            res.status(200).send("erro")
+            //res.json({ message: "Usuario nao encontrado com esses parametros", statusCode: '500' });
           }  
         }catch (error) {
       console.log("[USUARIO CONTROLLER] : LOGAR => " + error);
 
-      res.status(500).json({message: 'Login inválido!'});
+      //res.status(500).json({message: 'Login inválido!'});
     }
   }
 
