@@ -133,10 +133,14 @@ class EmpresaController {
       const existeEmpresa = await Empresa.findById(_idEmpresa);
 
       if (!existeEmpresa) {
-        return res.status(400).json({
-          error:
-            "Não é possível incluir esse Produto/Serviço pois a empresa informada não existe!",
-        });
+        res
+          .status(200)
+          .send(
+            "Não é possível incluir esse Produto/Serviço pois a empresa informada não existe!"
+          );
+        console.log(
+          "Não é possível incluir esse Produto/Serviço pois a empresa informada não existe!"
+        );
       } else if (
         novoProdutoServico.nome == undefined ||
         novoProdutoServico.tipo == undefined ||
@@ -147,11 +151,13 @@ class EmpresaController {
         res
           .status(200)
           .send("Atributos de Produto/Serviço insuficientes para a ação!");
+        console.log("Atributos de Produto/Serviço insuficientes para a ação!");
       } else {
         novoProdutoServico._id = Mongoose.Types.ObjectId();
         existeEmpresa.produtosServicos.push(novoProdutoServico);
         await Empresa.findByIdAndUpdate(existeEmpresa._id, existeEmpresa);
-        res.status(200).json(existeEmpresa);
+        res.status(200).send("Novo Produto/Serviço salvo com sucesso");
+        console.log("Novo Produto/Serviço salvo com sucesso");
       }
     } catch (error) {
       console.log(
@@ -227,7 +233,7 @@ class EmpresaController {
           }
         }
         await Empresa.findByIdAndUpdate(existeEmpresa._id, existeEmpresa);
-        res.status(200).json(existeEmpresa.produtosServicos[i]);
+        res.status(200).send("Produto/Serviço editado com sucesso!");
         console.log(existeEmpresa.produtosServicos[i]);
       }
     } catch (error) {
@@ -239,13 +245,15 @@ class EmpresaController {
   static async ativarInativarProdutoServico(req, res) {
     try {
       const idsEmpresaEProdutoServico = req.body;
-      const _idEmpresa = idsEmpresaEProdutoServico._idEmpresa;
-      const _idProdutoServico = idsEmpresaEProdutoServico._idProdutoServico;
       console.log(
         "[EMPRESA CONTROLLER] : CHAMOU O MÉTODO ATIVARINATIVAR PRODUTO SERVICO" +
           "\n PARÂMETRO: " +
           JSON.stringify(idsEmpresaEProdutoServico)
       );
+      const _idEmpresa = idsEmpresaEProdutoServico._idEmpresa;
+      const _idProdutoServico = idsEmpresaEProdutoServico._idProdutoServico;
+      console.log(JSON.stringify(_idEmpresa));
+      console.log(JSON.stringify(_idProdutoServico));
 
       const existeEmpresa = await Empresa.findById(_idEmpresa);
       let existeProdutoServico = undefined;
@@ -342,7 +350,7 @@ class EmpresaController {
   static async buscarMensagens(req, res) {
     console.log("[EMPRESA CONTROLLER] : CHAMOU O MÉTODO BUSCAR MENSAGENS");
     try {
-      res.json(await Empresa.find({},{"mensagens":1}));
+      res.json(await Empresa.find({}, { mensagens: 1 }));
     } catch (error) {
       console.log("[EMPRESA CONTROLLER] : BUSCANDO MENSAGENS => " + error);
       res.status(500).send("Erro ao buscar mensagens!");
