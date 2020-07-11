@@ -28,29 +28,27 @@ static async buscarTudo(req, res) {
 
   static async adicionar(req, res) {
     let UsuarioNovo = req.body;
-    if(UsuarioNovo.username && UsuarioNovo.password) {
-      const existeUsuario = await Usuario.findOne({ 'username': UsuarioNovo.username});
-
-      if (existeUsuario) {
-        return res.status(400).json({ error: 'Usuario já existe' });
-      }
-      else{
-        try {
+    try {
+      if(UsuarioNovo.username && UsuarioNovo.password) {
+        console.log("[USUARIO CONTROLLER] : ENTROU NO MÉTODO ADICIONAR" + "\n PARÂMETRO: " +
+              JSON.stringify(UsuarioNovo));
+            
+        let existeUsuario = await Usuario.findOne({ 'username': UsuarioNovo.username});
+        console.log("Usuario: " + UsuarioNovo.username + " Existe?? ==>  " + existeUsuario)
+        if(existeUsuario != null) {     
+          return res.status(200).send("Usuario já existe");
+        }
+        else{
           let hash = bcrypt.hashSync(UsuarioNovo.password, 10);
-
           UsuarioNovo.password = hash
-
-          console.log("[USUARIO CONTROLLER] : CHAMOU O MÉTODO ADICIONAR" + "\n PARÂMETRO: " +
-            JSON.stringify(UsuarioNovo)
-          );
-            res.status(201).json(await Usuario.create(UsuarioNovo));
-          } catch (error) {
-            res.status(500).send("Erro ao inserir novo usuario: " + error);
-          }
+          res.status(201).json(await Usuario.create(UsuarioNovo));
         }
       }
-    else{ 
-      res.status(200).send("Preencha Username e password");
+      else{ 
+        res.status(200).send("Preencha Username e password");
+      }
+    }catch (error) {
+      res.status(500).send("Erro ao inserir novo usuario: " + error);
     }
   }
 
@@ -117,7 +115,7 @@ static async buscarTudo(req, res) {
       const existeUsuario = await Usuario.findOne({ _id });
 
       if (!existeUsuario) {
-        return res.status(400).json({ error: 'Usuario não existe' });
+        return res.status(200).json({ error: 'Usuario não existe' });
       }
 
       await existeUsuario.updateOne({
@@ -175,19 +173,22 @@ static async buscarTudo(req, res) {
             console.log(JSON.stringify(foundUser))       
             const result = bcrypt.compareSync(user.password, foundUser.password)
             if(result){
-              res.status(200).json({message: 'Usuário Logado!', statusCode: '200'})
+              //res.status(200).json({message: 'Usuário Logado!', statusCode: '200'})
+              res.status(200).send("logado")
             }else{
-              res.send("Login e Senha inválidos!!");
+              res.status(200).send("inválido")
+              //res.json({message: "Login e Senha inválidos!!"});
             }
             }
           else{
             console.log("ENTROU NO ELSE")
-            res.send("Usuario nao encontrado com esses parametros");
+            res.status(200).send("erro")
+            //res.json({ message: "Usuario nao encontrado com esses parametros", statusCode: '500' });
           }  
         }catch (error) {
       console.log("[USUARIO CONTROLLER] : LOGAR => " + error);
 
-      res.status(500).json({message: 'Login inválido!'});
+      //res.status(500).json({message: 'Login inválido!'});
     }
   }
 
