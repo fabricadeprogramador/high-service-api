@@ -79,7 +79,7 @@ class EmpresaController {
       } else {
         let InativarAtivar = await Empresa.findById(existeEmpresa._id);
         InativarAtivar.ativo = !InativarAtivar.ativo;
-        await Empresa.findByIdAndUpdate(empresaInativar._id, InativarAtivar);
+        await Empresa.findByIdAndUpdate(existeEmpresa._id, InativarAtivar);
         res.status(200).json(InativarAtivar);
       }
 
