@@ -6,7 +6,7 @@ class TransacaoRoute {
 
     app
       .route("/transacao")
-      .get(TransacaoController.buscarTodos)
+      .get(TransacaoController.buscarTodosComCliente)
       .post(TransacaoController.adicionar)
       .put(TransacaoController.editar);
 
