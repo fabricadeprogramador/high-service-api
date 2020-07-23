@@ -7,7 +7,8 @@ class Transacao extends Mongoose.Schema {
         required: true,
       },
       cliente: {
-        type: String,
+        type: Mongoose.Schema.Types.ObjectId,
+        ref: "Cliente",
         required: true,
       },
       valor: {
@@ -20,6 +21,7 @@ class Transacao extends Mongoose.Schema {
       },
       status: {
         type: String,
+        enum: ["Em Andamento", "Concluído", "Cancelado"],
         required: true,
       },
       ativo: {

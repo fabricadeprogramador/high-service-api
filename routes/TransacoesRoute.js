@@ -10,8 +10,13 @@ class TransacaoRoute {
       .post(TransacaoController.adicionar)
       .put(TransacaoController.editar);
 
-      app.route("/transacao/ativarInativar").put(TransacaoController.ativarInativar);
-      app.route("/transacao/:id").delete(TransacaoController.deletarPorId);
+    app
+      .route("/transacao/ativarInativar")
+      .put(TransacaoController.ativarInativar);
+    app.route("/transacao/:id").delete(TransacaoController.deletarPorId);
+    app
+      .route("/transacao/cliente/:id")
+      .get(TransacaoController.buscarPorIdDoCliente);
   }
 }
 
