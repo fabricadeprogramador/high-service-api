@@ -28,7 +28,7 @@ class EmpresasRoute {
 
     //Rotas Mensagens
     app
-      .route("/empresas/mensagens")
+      .route("/empresas/mensagens/:id")
       .get(EmpresaController.buscarMensagens)
       .put(EmpresaController.adicionarMensagens);
     //Fim da rota mensagens

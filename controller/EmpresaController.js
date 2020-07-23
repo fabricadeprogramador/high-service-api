@@ -348,28 +348,54 @@ class EmpresaController {
 
   // METODOS PARA MENSAGENS
   static async buscarMensagens(req, res) {
-    console.log("[EMPRESA CONTROLLER] : CHAMOU O MÉTODO BUSCAR MENSAGENS");
-    try {
-      res.json(await Empresa.find({}, { mensagens: 1 }));
-    } catch (error) {
-      console.log("[EMPRESA CONTROLLER] : BUSCANDO MENSAGENS => " + error);
-      res.status(500).send("Erro ao buscar mensagens!");
-    }
-  }
 
-  static async adicionarMensagens(req, res) {
     try {
-      let mensagemNova = req.body;
-      console.log(
-        "[EMPRESA CONTROLLER] : CHAMOU O MÉTODO ADICIONAR" +
-          "\n PARÂMETRO: " +
-          JSON.stringify(mensagemNova)
-      );
-      res.status(201).json(await Empresa.create(mensagemNova));
+    
+    let _idMensagem = req.params.id;
+    
+    
+    console.log("[EMPRESA CONTROLLER] : CHAMOU O MÉTODO BUSCAR MENSAGENS"
+    );
+    
+    const empresa =await Empresa.findById(_idMensagem);
+    res.status(200).json(empresa.mensagens);
     } catch (error) {
-      res.status(500).send("Erro ao inserir nova empresa: " + error);
+    console.log("[EMPRESA CONTROLLER] : BUSCANDO MENSAGENS => " + error);
+    res.status(500).send("Erro ao buscar mensagens!");
     }
-  }
+    }
+    
+    static async adicionarMensagens(req, res) {
+    try {
+    let _idMensagem = req.params.id;
+    let mensagemNova = req.body;
+    console.log(
+    "[EMPRESA CONTROLLER] : CHAMOU O MÉTODO ADICIONAR" +
+    "\n PARÂMETRO: " + JSON.stringify(mensagemNova)
+    
+    );
+    console.log(JSON.stringify(mensagemNova));
+    let existeEmpresa = await Empresa.findById(_idMensagem);
+    
+    if (!existeEmpresa) {
+    return res.status(400).json({
+    error:
+    "Não é possível incluir mensagem informada não existe!",
+    });
+    
+    
+    }else {
+    mensagemNova._id = Mongoose.Types.ObjectId();
+    existeEmpresa.mensagens.push(mensagemNova);
+    await Empresa.findByIdAndUpdate(mensagemNova._id, mensagemNova);
+    res.status(200).json(mensagemNova);
+    }
+    
+        
+    } catch (error) {
+    res.status(500).send("Erro ao inserir nova empresa: " + error);
+    }
+    }
   //FIM DO METODO PARA MENSAGENS
 }
 
