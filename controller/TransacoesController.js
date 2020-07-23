@@ -15,7 +15,7 @@ class TransacoesController {
   static async buscarTodosComCliente(req, res) {
     console.log("[TRANSACOES CONTROLLER] : CHAMOU O MÉTODO BUSCAR TODOS");
     try {
-      res.json(await Transacao.find({}));
+      res.json(await Transacao.find({}).populate("cliente", "nome"));
     } catch (error) {
       console.log("[TRANSACAO CONTROLLER] : buscarTodos => " + error);
       res.status(500).send("Erro ao buscar Transacoes!");
